@@ -3,13 +3,21 @@ import time
 from connection import Connection
 from userservice import UserService
 from vehicleservice import VehicleService
+from getpass import getpass
 
 if __name__ == "__main__":
-    if len(sys.argv) < 3:
-        print "Usage: %s username password" % sys.argv[0]
+    if len(sys.argv) < 2:
+        print "Usage: %s username (password)" % sys.argv[0]
         exit(2)
+    uid = sys.argv[1]
 
-    c = Connection(sys.argv[1], sys.argv[2])
+    if len(sys.argv) == 2:
+        # Prompt for Password in hidden text
+        pwd = getpass("Password: ")
+    else:
+        pwd = sys.argv[2]
+
+    c = Connection(uid, pwd)
     u = UserService(c)
     print "logging in..."
     d = u.login_and_get_status()
